@@ -9,7 +9,7 @@ export class FilesService {
     return resolve(__dirname, '..', '..', 'uploads', 'avatars', filename);
   }
 
-  async getUserAvatarPath(userId: string): Promise<string> {
+  async getUserAvatarPath(userId: number): Promise<string> {
     try {
       await promises.access(this.getAvatarPath(`${userId}.jpg`));
       return this.getAvatarPath(`${userId}.jpg`);
