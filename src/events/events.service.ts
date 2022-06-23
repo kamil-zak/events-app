@@ -34,8 +34,7 @@ export class EventsService {
   }
 
   async create(details: EventDetailsDto, userId: number): Promise<EventDto> {
-    const { name, startDate, endDate } = details;
-    return this.eventModel.create({ name, startDate, endDate, userId });
+    return this.eventModel.create({ ...details, userId });
   }
 
   async update(id: number, details: UpdateEventDto, userId: number): Promise<EventDto> {
@@ -50,7 +49,6 @@ export class EventsService {
   async delete(id: number, userId: number) {
     const event = await this.eventModel.findByPk(id);
     if (!event) throw new NotFoundException();
-    console.log(event);
     if (event.userId !== userId) throw new ForbiddenException();
     await event.destroy();
   }
