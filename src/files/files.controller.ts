@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Res } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { FilesService } from './files.service';
 
@@ -9,7 +9,8 @@ export class FilesController {
   constructor(private filesService: FilesService) {}
 
   @Get('avatar/:userId')
-  @ApiResponse({ status: 200, description: 'Avatar of user or default avatar.' })
+  @ApiOperation({ description: 'Get user avatar or default avatar if user does not have.' })
+  @ApiResponse({ status: 200, description: 'User avatar was retuned successfully' })
   async getAvatar(@Param('userId') id: string, @Res() res: Response) {
     const avatarPath = await this.filesService.getUserAvatarPath(id);
     res.sendFile(avatarPath);
