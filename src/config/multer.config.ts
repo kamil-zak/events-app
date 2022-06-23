@@ -3,6 +3,7 @@ import { Request } from 'express';
 import { diskStorage } from 'multer';
 import { v4 as uuid } from 'uuid';
 import { extname } from 'path';
+import { BadRequestException } from '@nestjs/common';
 
 const multerOptions: MulterOptions = {
   limits: {
@@ -10,7 +11,7 @@ const multerOptions: MulterOptions = {
   },
   fileFilter: (req: Request, file: Express.Multer.File, done: (error: Error, acceptFile: boolean) => void) => {
     if (file.mimetype.match(/\/(jpg|jpeg|png)$/)) done(null, true);
-    else done(new Error('Invalid file type'), false);
+    else done(new BadRequestException('Bad file format'), false);
   },
   storage: diskStorage({
     destination: './uploads/temp',
