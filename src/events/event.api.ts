@@ -2,7 +2,7 @@ import { applyDecorators } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { PER_PAGE_DEFAULT } from './contants/pagination.constants';
 import { EventDetailsDto } from './dto/event-details.dto';
-import { EventPartialDetailsDto } from './dto/event-partial-details';
+import { EventPartialDetailsDto } from './dto/event-partial-details.dto';
 import { EventDto } from './dto/event.dto';
 import { EventPaginationDto } from './dto/events-pagination.dto';
 
