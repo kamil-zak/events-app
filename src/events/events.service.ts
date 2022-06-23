@@ -21,8 +21,10 @@ export class EventsService {
   ) {}
 
   async findAll({ userId, page = 1, limit = 5 }: FindAllconfig): Promise<EventPaginationDto> {
-    const userIdFilter = userId && { where: { userId } };
-    const filters = { ...userIdFilter, limit, offset: limit * (page - 1) };
+    const userIdFilter = userId ? { where: { userId } } : {};
+    const paginationFiler = { limit, offset: limit * (page - 1) };
+    const orderFilter = { order: ['startDate', 'endDate'] };
+    const filters = { ...userIdFilter, ...paginationFiler, ...orderFilter };
     const { rows, count } = await this.eventModel.findAndCountAll(filters);
     const pagesCount = Math.ceil(count / limit);
     if (page > 1 && page > pagesCount) throw new BadRequestException('This page does not exists');

@@ -14,7 +14,7 @@ const eventUnauthenticatedResponse = { status: 401, description: 'Unauhenticated
 
 export const ApiFindAllEvents = applyDecorators(
   ApiBearerAuth(),
-  ApiOperation({ description: 'Get array of events with pagination.' }),
+  ApiOperation({ description: 'Get array of events with pagination, sorted by startDate and endDate.' }),
   ApiResponse({ status: 200, description: `Pagination data and array of events`, type: EventPaginationDto }),
   ApiQuery({ name: 'page', description: 'Page of results to return.', required: false, schema: { default: 1 } }),
   ApiQuery({
