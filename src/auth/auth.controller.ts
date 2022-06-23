@@ -18,6 +18,7 @@ import { ApiLoggedUser, ApiRefresh, ApiSignIn, ApiSignUp } from './auth.api';
 import { AuthService } from './auth.service';
 import { LoggedUserDto } from './dto/logged-user.dto';
 import { SignUpDto } from './dto/signup.dto';
+import { ToknesDto } from './dto/toknes.dto';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
@@ -30,15 +31,15 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @HttpCode(200)
   @ApiSignIn
-  async signIn(@UserId() userId: number) {
-    const toknes = await this.authService.signIn(userId);
+  async signIn(@UserId() userId: number): Promise<ToknesDto> {
+    const toknes = this.authService.signIn(userId);
     return toknes;
   }
 
   @Post('signup')
   @UseInterceptors(FileInterceptor('avatar'))
   @ApiSignUp
-  async signUp(@Body() body: SignUpDto, @UploadedFile() avatar: Express.Multer.File) {
+  async signUp(@Body() body: SignUpDto, @UploadedFile() avatar: Express.Multer.File): Promise<ToknesDto> {
     console.log(avatar);
     const toknes = await this.authService.signUp(body, avatar);
     return toknes;
@@ -48,7 +49,7 @@ export class AuthController {
   @UseGuards(JwtRefreshAuthGuard)
   @HttpCode(200)
   @ApiRefresh
-  async refresh(@UserId() userId: number) {
+  async refresh(@UserId() userId: number): Promise<ToknesDto> {
     const toknes = await this.authService.refresh(userId);
     return toknes;
   }

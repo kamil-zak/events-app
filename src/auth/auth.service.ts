@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { FilesService } from 'src/files/files.service';
 import { SignUpDto } from './dto/signup.dto';
+import { ToknesDto } from './dto/toknes.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
     private filesService: FilesService,
   ) {}
 
-  generateToknes(id: number) {
+  private generateToknes(id: number) {
     const payload = { sub: id };
     const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_SECRET'),
@@ -26,17 +27,17 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async validateAuth(email: string, pass: string) {
+  async validateAuth(email: string, pass: string): Promise<number | null> {
     const user = await this.usersService.findByLoginData(email, pass);
     if (!user) return null;
     return user.id;
   }
 
-  async signIn(userId: number) {
+  signIn(userId: number): ToknesDto {
     return this.generateToknes(userId);
   }
 
-  async signUp(userData: SignUpDto, avatar: Express.Multer.File) {
+  async signUp(userData: SignUpDto, avatar: Express.Multer.File): Promise<ToknesDto> {
     const user = await this.usersService.create(userData.email, userData.password);
     if (avatar) {
       this.filesService.storeAvatar(avatar, user.id);
@@ -44,7 +45,7 @@ export class AuthService {
     return this.generateToknes(user.id);
   }
 
-  async refresh(id: number) {
+  async refresh(id: number): Promise<ToknesDto> {
     return this.generateToknes(id);
   }
 }

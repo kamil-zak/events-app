@@ -5,11 +5,11 @@ import { resolve } from 'path';
 
 @Injectable()
 export class FilesService {
-  private getAvatarPath(filename: string) {
+  private getAvatarPath(filename: string): string {
     return resolve(__dirname, '..', '..', 'uploads', 'avatars', filename);
   }
 
-  async getUserAvatarPath(userId: string) {
+  async getUserAvatarPath(userId: string): Promise<string> {
     try {
       await promises.access(this.getAvatarPath(`${userId}.jpg`));
       return this.getAvatarPath(`${userId}.jpg`);
