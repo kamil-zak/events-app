@@ -1,6 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { PER_PAGE_DEFAULT } from './contants/pagination.constants';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { EventDetailsDto } from './dto/event-details.dto';
 import { EventPartialDetailsDto } from './dto/event-partial-details.dto';
 import { EventDto } from './dto/event.dto';
@@ -16,14 +15,6 @@ export const ApiFindAllEvents = applyDecorators(
   ApiBearerAuth(),
   ApiOperation({ description: 'Get array of events with pagination, sorted by startDate and endDate.' }),
   ApiResponse({ status: 200, description: `Pagination data and array of events`, type: EventPaginationDto }),
-  ApiQuery({ name: 'page', description: 'Page of results to return.', required: false, schema: { default: 1 } }),
-  ApiQuery({
-    name: 'limit',
-    description: 'Count of items per page.',
-    required: false,
-    schema: { default: PER_PAGE_DEFAULT },
-  }),
-  ApiQuery({ name: 'userId', description: 'Filter events by user id.', required: false }),
   ApiResponse({ status: 400, description: 'Page does not exists.' }),
   ApiResponse(eventUnauthenticatedResponse),
 );

@@ -8,6 +8,7 @@ import { ApiCreateEvent, ApiDeleteEvent, ApiFindAllEvents, ApiFindOneEvent, ApiU
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventPaginationDto } from './dto/events-pagination.dto';
 import { EventDto } from './dto/event.dto';
+import { EventFindAllQueryDto } from './dto/event-find-all-query.dto';
 
 @Controller('events')
 @ApiTags('events')
@@ -17,12 +18,8 @@ export class EventsController {
   @Get()
   @ProtectedRoute
   @ApiFindAllEvents
-  async findAll(@Query() { page, limit, userId }): Promise<EventPaginationDto> {
-    const events = await this.eventsService.findAll({
-      userId: parseInt(userId),
-      page: parseInt(page),
-      limit: parseInt(limit),
-    });
+  async findAll(@Query() { page, limit, userId }: EventFindAllQueryDto): Promise<EventPaginationDto> {
+    const events = await this.eventsService.findAll({ userId, page, limit });
     return events;
   }
 

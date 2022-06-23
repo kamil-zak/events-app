@@ -1,6 +1,7 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import { PER_PAGE_DEFAULT } from './contants/pagination.constants';
 import { EventDetailsDto } from './dto/event-details.dto';
 import { EventDto } from './dto/event.dto';
 import { EventPaginationDto } from './dto/events-pagination.dto';
@@ -20,7 +21,7 @@ export class EventsService {
     private eventModel: typeof Event,
   ) {}
 
-  async findAll({ userId, page = 1, limit = 5 }: FindAllconfig): Promise<EventPaginationDto> {
+  async findAll({ userId, page = 1, limit = PER_PAGE_DEFAULT }: FindAllconfig): Promise<EventPaginationDto> {
     const userIdFilter = userId ? { where: { userId } } : {};
     const paginationFiler = { limit, offset: limit * (page - 1) };
     const orderFilter = { order: ['startDate', 'endDate'] };
