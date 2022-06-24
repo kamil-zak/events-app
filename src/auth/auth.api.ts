@@ -1,6 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { LoggedUserDto } from './dto/logged-user.dto';
+import { ApiBody, ApiConsumes, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { RefreshDto } from './dto/refresh.dto';
 import { SignInDto } from './dto/signin.dto';
 import { SignUpDto } from './dto/signup.dto';
@@ -27,11 +26,4 @@ export const ApiRefresh = applyDecorators(
   ApiBody({ description: 'Refresh toknen.', required: true, type: RefreshDto }),
   ApiResponse({ status: 200, description: 'New toknes generated successfully.', type: ToknesDto }),
   ApiResponse({ status: 401, description: 'Invalid or not provided refresh toknen' }),
-);
-
-export const ApiLoggedUser = applyDecorators(
-  ApiOperation({ description: 'Get current logged in user.' }),
-  ApiBearerAuth(),
-  ApiResponse({ status: 200, description: 'Successfully returned logged user data.', type: LoggedUserDto }),
-  ApiResponse({ status: 401, description: 'Token not provided, invalid or user does not exists.' }),
 );

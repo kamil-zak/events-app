@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   private generateToknes(userId: number): ToknesDto {
-    const payload = { sub: userId };
+    const payload: ITokenPayload = { sub: userId };
     const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_SECRET'),
       expiresIn: '5m',
