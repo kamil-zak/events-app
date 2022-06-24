@@ -27,7 +27,7 @@ export class AuthController {
   @Post('signup')
   @UseInterceptors(FileInterceptor('avatar'))
   @ApiSignUp
-  async signUp(@Body() body: SignUpDto, @UploadedFile() avatar: Express.Multer.File): Promise<ToknesDto> {
+  async signUp(@Body() body: SignUpDto, @UploadedFile() avatar?: Express.Multer.File): Promise<ToknesDto> {
     const toknes = await this.authService.signUp(body, avatar);
     return toknes;
   }

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -44,7 +45,8 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('avatar'))
   @ApiUpdateAvatar
   @HttpCode(204)
-  async updateAvatar(@UserId() userId: number, @UploadedFile() avatar: Express.Multer.File) {
+  async updateAvatar(@UserId() userId: number, @UploadedFile() avatar?: Express.Multer.File) {
+    if (!avatar) throw new BadRequestException('File was not provided');
     await this.usersService.updateAvatar(userId, avatar);
   }
 }

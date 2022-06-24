@@ -38,7 +38,7 @@ export class AuthService {
     return this.generateToknes(userId);
   }
 
-  async signUp(userData: SignUpDto, avatar: Express.Multer.File): Promise<ToknesDto> {
+  async signUp(userData: SignUpDto, avatar?: Express.Multer.File): Promise<ToknesDto> {
     const user = await this.usersService.create(userData.email, userData.password);
     if (avatar) {
       this.filesService.storeAvatar(avatar, user.id);
