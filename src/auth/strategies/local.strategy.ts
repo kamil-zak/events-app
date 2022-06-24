@@ -11,7 +11,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(email: string, password: string): Promise<IUserPayload> {
-    const id = await this.authService.validateAuth(email, password);
+    const id = await this.authService.getValidatedUserId(email, password);
     if (!id) {
       throw new UnauthorizedException('Incorrect sign in data.');
     }

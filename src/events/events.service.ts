@@ -34,7 +34,8 @@ export class EventsService {
   }
 
   async create(details: EventDetailsDto, userId: number): Promise<EventDto> {
-    return this.eventModel.create({ ...details, userId });
+    const event = await this.eventModel.create({ ...details, userId });
+    return event;
   }
 
   async update(id: number, details: UpdateEventDto, userId: number): Promise<EventDto> {

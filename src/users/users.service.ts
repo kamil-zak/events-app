@@ -9,13 +9,13 @@ export class UsersService {
     private userModel: typeof User,
   ) {}
 
-  async findByLoginData(email: string, pass: string) {
+  async findByLoginData(email: string, pass: string): Promise<User | null> {
     const user = await this.userModel.findOne({ where: { email } });
     if (!user || !(await user.comparePassword(pass))) return null;
     return user;
   }
 
-  async findById(userId: number) {
+  async findById(userId: number): Promise<User | null> {
     const user = await this.userModel.findByPk(userId);
     return user;
   }
@@ -24,7 +24,7 @@ export class UsersService {
     try {
       const user = await this.userModel.create({ email, password });
       return user;
-    } catch (e) {
+    } catch (e: any) {
       if (e.name === 'SequelizeUniqueConstraintError') throw new ConflictException('Email already exists.');
       throw e;
     }

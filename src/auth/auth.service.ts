@@ -5,6 +5,7 @@ import { UsersService } from 'src/users/users.service';
 import { FilesService } from 'src/files/files.service';
 import { SignUpDto } from './dto/signup.dto';
 import { ToknesDto } from './dto/toknes.dto';
+import ITokenPayload from './interfaces/token-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -15,8 +16,8 @@ export class AuthService {
     private filesService: FilesService,
   ) {}
 
-  private generateToknes(id: number) {
-    const payload = { sub: id };
+  private generateToknes(userId: number): ToknesDto {
+    const payload = { sub: userId };
     const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_SECRET'),
       expiresIn: '5m',
@@ -27,7 +28,7 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async validateAuth(email: string, pass: string): Promise<number | null> {
+  async getValidatedUserId(email: string, pass: string): Promise<number | null> {
     const user = await this.usersService.findByLoginData(email, pass);
     if (!user) return null;
     return user.id;
@@ -45,7 +46,7 @@ export class AuthService {
     return this.generateToknes(user.id);
   }
 
-  async refresh(id: number): Promise<ToknesDto> {
-    return this.generateToknes(id);
+  async refresh(userId: number): Promise<ToknesDto> {
+    return this.generateToknes(userId);
   }
 }
