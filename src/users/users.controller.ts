@@ -19,12 +19,12 @@ import { ApiChangePassword, ApiGetProfile, ApiUpdateAvatar } from './users.api';
 import { UsersService } from './users.service';
 
 @Controller('profile')
+@ProtectedRoute
 @ApiTags('profile')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get('')
-  @ProtectedRoute
   @ApiGetProfile
   async getUser(@UserId() userId: number): Promise<UserDto> {
     const user = await this.usersService.findById(userId);
@@ -33,7 +33,6 @@ export class UsersController {
   }
 
   @Put('/password')
-  @ProtectedRoute
   @ApiChangePassword
   @HttpCode(204)
   async changePassword(@UserId() userId: number, @Body() body: ChangePasswordDto) {
@@ -41,7 +40,6 @@ export class UsersController {
   }
 
   @Put('/avatar')
-  @ProtectedRoute
   @UseInterceptors(FileInterceptor('avatar'))
   @ApiUpdateAvatar
   @HttpCode(204)
