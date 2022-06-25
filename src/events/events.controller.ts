@@ -11,12 +11,12 @@ import { EventDto } from './dto/event.dto';
 import { EventFindAllQueryDto } from './dto/event-find-all-query.dto';
 
 @Controller('events')
+@ProtectedRoute
 @ApiTags('events')
 export class EventsController {
   constructor(private eventsService: EventsService) {}
 
   @Get()
-  @ProtectedRoute
   @ApiFindAllEvents
   async findAll(@Query() { page, limit, userId }: EventFindAllQueryDto): Promise<EventPaginationDto> {
     const events = await this.eventsService.findAll({ userId, page, limit });
@@ -24,7 +24,6 @@ export class EventsController {
   }
 
   @Get(':id')
-  @ProtectedRoute
   @ApiFindOneEvent
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<EventDto> {
     const event = await this.eventsService.findById(id);
@@ -32,7 +31,6 @@ export class EventsController {
   }
 
   @Post()
-  @ProtectedRoute
   @ApiCreateEvent
   async create(@Body() details: EventDetailsDto, @UserId() userId: number): Promise<EventDto> {
     const event = await this.eventsService.create(details, userId);
@@ -40,7 +38,6 @@ export class EventsController {
   }
 
   @Put(':id')
-  @ProtectedRoute
   @ApiUpdateEvent
   async update(
     @Body() details: UpdateEventDto,
@@ -52,7 +49,6 @@ export class EventsController {
   }
 
   @Delete(':id')
-  @ProtectedRoute
   @HttpCode(204)
   @ApiDeleteEvent
   async delete(@Param('id', ParseIntPipe) id: number, @UserId() userId: number) {
